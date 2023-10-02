@@ -12,15 +12,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if( WIN32 )
     add_definitions(-D_USE_MATH_DEFINES -D_CRT_SECURE_NO_WARNINGS -DNDEBUG)
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -Wall -DNDEBUG")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -g -Wall -DNDEBUG")
     # -DNDEBUG
 endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
-
-set(PYTHON_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/ext/pybind11/include/" "/usr/include/python3.8/" )
-set(OpenEXR_ROOT "/usr/include/OpenEXR/")
-set(ENOKI_DIR "${CMAKE_SOURCE_DIR}/ext/enoki/")
 
 if( WIN32 )
     set(ENOKI_DIR ${CMAKE_SOURCE_DIR}/ext_win64/enoki)
@@ -30,6 +26,8 @@ if( WIN32 )
         message(FATAL_ERROR "PYTHON_ROOT not set!")
     endif()
 else()
+    set(ENOKI_DIR ${CMAKE_SOURCE_DIR}/ext/enoki)
+    set(PYBIND11_ROOT ${CMAKE_SOURCE_DIR}/ext/pybind11)
     if ( NOT ENOKI_DIR )
         message(FATAL_ERROR "ENOKI_DIR not set!")
     endif()
@@ -107,6 +105,7 @@ else()
         ${OpenEXR_INCLUDE_DIR}
         ${PYTHON_INCLUDE_PATH}
         ${ENOKI_DIR}/include
+        ${PYBIND11_ROOT}/include
     )
     link_directories(
         ${ENOKI_DIR}/build
